@@ -78,8 +78,7 @@ class List(Resource):
             session.add(db_list)
             # commit change
             session.commit()
-            list_id = db_list.id
             session.close()
-            return {"data": {"list_id": list_id, "title" : p_args["title"]}}, 200
+            return {"data": {"list_id": p_args["list_id"], "title" : p_args["title"]}}, 200
         except:
             return {"Err": "Internal Error"}
