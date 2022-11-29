@@ -1,15 +1,15 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, inspect
 from sqlalchemy.orm import relationship
-from db import BASE, SALT
+from db import BASE, SALT, engine
 import bcrypt
 from ListModel import Lists
 
-class User(BASE):
+class Users(BASE):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
     username = Column(String(64), unique=True)
     password_hash = Column(String(128), unique=True)
-    children = relationship("Lists", cascade="all, delete")
+    children = relationship(Lists, cascade="all, delete")
 
     def __init__(self, username: str, password: str) -> None:
         self.username = username
@@ -20,3 +20,7 @@ class User(BASE):
     
     def check_password(self, password: str) -> None:
         return bcrypt.checkpw(password.encode("utf8"), self.password_hash.encode("utf8"))
+
+if __name__ == "__main__":
+    if not inspect(engine).has_table("users"):
+        BASE.metadata.create_all(engine)
