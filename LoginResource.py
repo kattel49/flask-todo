@@ -20,7 +20,7 @@ class Login(Resource):
         if db_user is None:
             return {"Err": "Username/Password is invalid"}, 400
         if db_user.check_password(l_args["password"]):
-            token = jwt.encode({"username": db_user.username, "id": db_user.id}, SECRET_KEY, algorithm="HS256")
+            token = jwt.encode({"username": db_user.username, "user_id": db_user.id}, SECRET_KEY, algorithm="HS256")
             return {"data": {"token": token}}
         else:
             return {"Err": "Username/Password is invalid"}
