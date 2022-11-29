@@ -9,7 +9,7 @@ class User(BASE):
     id = Column(Integer, primary_key=True)
     username = Column(String(64), unique=True)
     password_hash = Column(String(128), unique=True)
-    children = relationship("Lists")
+    children = relationship("Lists", cascade="all, delete")
 
     def __init__(self, username: str, password: str) -> None:
         self.username = username
